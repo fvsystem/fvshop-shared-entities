@@ -1,18 +1,20 @@
 {
-  "name": "node-typescript-template",
-  "version": "0.0.1",
+  "name": "@fvsystem/fvshop-shared-entities",
+  "version": "0.1",
   "description": "Template for typescript node",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "pretest": "tsc --noEmit",
     "test": "jest",
+    "prepublish": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
     "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
     "commit": "cz",
     "dev": "nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register src/@shared/utils/index.ts' -e ts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fvsystem/cache-template.git"
+    "url": "https://github.com/fvsystem/fvshop-shared-entities"
   },
   "author": "Lucas Rego",
   "license": "ISC",

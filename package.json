@@ -4,6 +4,10 @@
   "description": "Template for typescript node",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "pretest": "tsc --noEmit",
     "test": "jest",

@@ -1,27 +1,31 @@
 {
   "name": "@fvsystem/fvshop-shared-entities",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Template for typescript node",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
   "files": [
     "dist",
     "src"
   ],
   "export": {
     ".": {
-      "require": "./dist/index.js",
-      "default": "./dist/index.js"
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/cjs/index.d.ts",
+      "import": "./dist/esm/index.js"
     },
     "./package.json": "./package.json"
   },
   "scripts": {
     "pretest": "tsc --noEmit",
     "test": "jest",
-    "prepublish": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
-    "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
+    "prepublish": "npm run build",
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs && tscpaths -p tsconfig.json -s ./src -o ./dist/cjs",
+    "build:esm": "tsc && tscpaths -p tsconfig.json -s ./src -o ./dist/esm",
     "commit": "cz",
-    "dev": "nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register src/@shared/utils/index.ts' -e ts"
+    "dev": "nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register src/@root/utils/index.ts' -e ts"
   },
   "repository": {
     "type": "git",

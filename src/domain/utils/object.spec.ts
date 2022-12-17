@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { deepFreeze } from '@shared/domain/utils/object';
+import { deepFreeze } from '@root/domain/utils/object';
 
 describe('object Unit Tests', () => {
   it('should not freeze a scalar value', () => {

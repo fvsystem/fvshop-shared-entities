@@ -1,4 +1,4 @@
-import { Entity } from '@shared/domain/entity';
+import { Entity } from '@root/domain/entity';
 // eslint-disable-next-line import/no-cycle
 import { SearchResultProps } from './repository.types';
 

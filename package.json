@@ -1,6 +1,6 @@
 {
   "name": "@fvsystem/fvshop-shared-entities",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Template for typescript node",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,6 +8,13 @@
     "dist",
     "src"
   ],
+  "export": {
+    ".": {
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "pretest": "tsc --noEmit",
     "test": "jest",

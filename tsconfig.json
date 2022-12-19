@@ -10,7 +10,7 @@
         "./*"
       ],
       "@root": [
-        "./index.ts"
+        "./index"
       ]
     },
     "rootDir": "src",

@@ -1,6 +1,6 @@
 {
   "name": "@fvsystem/fvshop-shared-entities",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Template for typescript node",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -72,6 +72,7 @@
   },
   "dependencies": {
     "uuid": "^9.0.0",
+    "winston": "^3.8.2",
     "zod": "^3.20.2"
   }
 }

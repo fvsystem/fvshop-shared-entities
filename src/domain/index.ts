@@ -4,3 +4,4 @@ export * from './repository';
 export * from './errors';
 export * from './validator';
 export * from './utils';
+export * from './event';

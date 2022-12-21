@@ -1,5 +1,5 @@
 import { Entity } from '../entity/entity';
-import { UniqueEntityId } from '../value-objects/unique-entity-id.vo';
+import { UniqueEntityId } from '../value-object/unique-entity-id.vo';
 
 export interface RepositoryInterface<E extends Entity> {
   insert(entity: E): Promise<void>;

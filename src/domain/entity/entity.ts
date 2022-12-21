@@ -1,4 +1,4 @@
-import { UniqueEntityId } from '../value-objects/unique-entity-id.vo';
+import { UniqueEntityId } from '../value-object/unique-entity-id.vo';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export abstract class Entity<Props = any> {

@@ -10,7 +10,8 @@ const schema = z.object({
     })
     .uuid({
       message: 'Field must be a string uuid',
-    }),
+    })
+    .min(1),
   other: z.number({
     required_error: 'Other is Required',
   }),
@@ -48,5 +49,18 @@ describe('ClassValidatorFields Unit Tests', () => {
     expect(validator.validate(value)).toBeTruthy();
     expect(validator.validatedData).toStrictEqual(value);
     expect(validator.errors).toBeNull();
+  });
+
+  it('should validate with more than one error in a field', () => {
+    const validator = new StubClassValidatorFields();
+    const value = { field: '', other: 2 };
+    expect(validator.validate(value)).toBeFalsy();
+    expect(validator.validatedData).toBeNull();
+    expect(validator.errors).toStrictEqual({
+      field: [
+        'Field must be a string uuid',
+        'String must contain at least 1 character(s)',
+      ],
+    });
   });
 });

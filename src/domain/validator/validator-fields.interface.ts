@@ -8,5 +8,3 @@ export interface ValidatorFieldsInterface<PropsValidated> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   validate(data: any): boolean;
 }
-
-export default ValidatorFieldsInterface;

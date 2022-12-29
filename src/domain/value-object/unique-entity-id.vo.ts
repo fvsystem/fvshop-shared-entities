@@ -15,5 +15,3 @@ export class UniqueEntityId extends ValueObject<string> {
     }
   }
 }
-
-export default UniqueEntityId;

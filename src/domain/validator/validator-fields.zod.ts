@@ -32,5 +32,3 @@ export abstract class ValidatorFieldsZod<PropsValidated>
     return !errors.length;
   }
 }
-
-export default ValidatorFieldsZod;

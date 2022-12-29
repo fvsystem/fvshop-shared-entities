@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { v4 as uuid } from 'uuid';
-import ClassValidatorFieldsZod from './validator-fields.zod';
+import { ValidatorFieldsZod } from './validator-fields.zod';
 
 const schema = z.object({
   field: z
@@ -17,7 +17,7 @@ const schema = z.object({
   }),
 });
 
-class StubClassValidatorFields extends ClassValidatorFieldsZod<{
+class StubClassValidatorFields extends ValidatorFieldsZod<{
   field: string;
 }> {
   constructor() {

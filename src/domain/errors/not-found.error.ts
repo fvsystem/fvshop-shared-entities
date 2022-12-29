@@ -4,5 +4,3 @@ export class NotFoundError extends Error {
     this.name = 'NotFoundError';
   }
 }
-
-export default NotFoundError;

@@ -1,6 +1,6 @@
 import { Entity } from '@root/domain/entity';
 // eslint-disable-next-line import/no-cycle
-import { SearchResultProps } from './repository.types';
+import { SearchResultProps } from './repository.searchable.interface';
 
 export class SearchResult<E extends Entity = Entity, Filter = string> {
   readonly items: E[];

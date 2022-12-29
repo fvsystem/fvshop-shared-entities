@@ -16,7 +16,7 @@ describe('ValueObject Unit Tests', () => {
 
   describe('should convert to a string', () => {
     const date = new Date();
-    const arrange = [
+    const arrange: { received: any; expected: string }[] = [
       { received: '', expected: '' },
       { received: 'fake test', expected: 'fake test' },
       { received: 0, expected: '0' },

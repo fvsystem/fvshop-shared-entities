@@ -55,5 +55,11 @@ describe('Email value object', () => {
     expect(email.subject).toStrictEqual('test');
     expect(email.body).toStrictEqual('test');
     expect(email.attachments).toStrictEqual([]);
+    expect(email.value).toStrictEqual({
+      to: ['test@test.com', 'test5@test.com'],
+      from: ['test2@test.com', 'test6@test.com'],
+      subject: 'test',
+      body: 'test',
+    });
   });
 });

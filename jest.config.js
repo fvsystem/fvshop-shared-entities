@@ -20,6 +20,7 @@ module.exports = {
   },
   extensionsToTreatAsEsm: ['.ts'],
   collectCoverage: true,
+  coverageDirectory: '../coverage',
   coverageThreshold: {
     global: {
       branches: 80,

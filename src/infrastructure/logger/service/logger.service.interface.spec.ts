@@ -1,4 +1,4 @@
-import { LoggerServiceInterface } from './logger.service';
+import { LoggerServiceInterface } from './logger.service.interface';
 
 class LoggerMock implements LoggerServiceInterface {
   log = jest.fn();

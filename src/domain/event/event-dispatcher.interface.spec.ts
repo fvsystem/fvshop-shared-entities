@@ -2,7 +2,7 @@
 import {
   EventInterface,
   EventHandlerInterface,
-  WinstonLoggerService,
+  LoggerServiceWinton,
   EventDispatcher,
 } from '@root';
 
@@ -17,7 +17,7 @@ class StubEvent implements EventInterface {
   }
 }
 
-const logger = new WinstonLoggerService();
+const logger = new LoggerServiceWinton();
 
 class StubEventHandler implements EventHandlerInterface<StubEvent> {
   handle(event: EventInterface): void {

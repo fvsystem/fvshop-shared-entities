@@ -1,4 +1,5 @@
-import { EmailServiceInterface, EmailValueObject } from '@root';
+import { EmailValueObject } from '@root/application/value-object';
+import { EmailServiceInterface } from './email.service.interface';
 
 class EmailMock implements EmailServiceInterface {
   sendEmail = jest.fn();

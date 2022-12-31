@@ -1,9 +1,9 @@
-import { WinstonLoggerService, logger } from '@root';
+import { LoggerServiceWinton, logger } from './logger.service.winton';
 
 describe('Logger service winston', () => {
   it('shoud log', () => {
     const loggerSpy = jest.spyOn(logger, 'log');
-    const loggerService = new WinstonLoggerService();
+    const loggerService = new LoggerServiceWinton();
     loggerService.log('test');
     expect(loggerSpy).toHaveBeenCalledTimes(1);
     loggerService.log({});
@@ -12,7 +12,7 @@ describe('Logger service winston', () => {
 
   it('shoud info', () => {
     const loggerSpy = jest.spyOn(logger, 'info');
-    const loggerService = new WinstonLoggerService();
+    const loggerService = new LoggerServiceWinton();
     loggerService.info('test');
     expect(loggerSpy).toHaveBeenCalledTimes(1);
     loggerService.info({});
@@ -21,7 +21,7 @@ describe('Logger service winston', () => {
 
   it('shoud warn', () => {
     const loggerSpy = jest.spyOn(logger, 'warn');
-    const loggerService = new WinstonLoggerService();
+    const loggerService = new LoggerServiceWinton();
     loggerService.warn('test');
     expect(loggerSpy).toHaveBeenCalledTimes(1);
     loggerService.warn({});
@@ -30,7 +30,7 @@ describe('Logger service winston', () => {
 
   it('shoud error', () => {
     const loggerSpy = jest.spyOn(logger, 'error');
-    const loggerService = new WinstonLoggerService();
+    const loggerService = new LoggerServiceWinton();
     loggerService.error('test');
     expect(loggerSpy).toHaveBeenCalledTimes(1);
     loggerService.error({});

@@ -1,5 +1,5 @@
-import { LoggerServiceInterface } from '@root/application/service';
 import { createLogger, format, transports } from 'winston';
+import { LoggerServiceInterface } from './logger.service.interface';
 
 const { combine, timestamp, label, json, prettyPrint } = format;
 
@@ -25,7 +25,7 @@ const stringifyCircularJSON = (obj): string => {
   });
 };
 
-export class WinstonLoggerService implements LoggerServiceInterface {
+export class LoggerServiceWinton implements LoggerServiceInterface {
   static transformMessage(message: unknown): string {
     if (typeof message === 'string') {
       return message;
@@ -35,20 +35,20 @@ export class WinstonLoggerService implements LoggerServiceInterface {
 
   log(message: unknown): void {
     logger.log({
-      message: WinstonLoggerService.transformMessage(message),
+      message: LoggerServiceWinton.transformMessage(message),
       level: 'info',
     });
   }
 
   info(message: unknown): void {
-    logger.info({ message: WinstonLoggerService.transformMessage(message) });
+    logger.info({ message: LoggerServiceWinton.transformMessage(message) });
   }
 
   warn(message: unknown): void {
-    logger.warn({ message: WinstonLoggerService.transformMessage(message) });
+    logger.warn({ message: LoggerServiceWinton.transformMessage(message) });
   }
 
   error(message: unknown): void {
-    logger.error({ message: WinstonLoggerService.transformMessage(message) });
+    logger.error({ message: LoggerServiceWinton.transformMessage(message) });
   }
 }

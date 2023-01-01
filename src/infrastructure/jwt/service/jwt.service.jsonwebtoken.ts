@@ -1,5 +1,9 @@
 import { sign, Algorithm, verify } from 'jsonwebtoken';
-import { JWTPayload, JWTServicesInterface } from './jwt.service.interface';
+import {
+  JWTData,
+  JWTPayload,
+  JWTServicesInterface,
+} from './jwt.service.interface';
 
 export interface JWTServiceJsonWebTokenProps {
   privateKey: string;
@@ -17,7 +21,7 @@ export class JWTServiceJsonWebToken<Payload extends JWTPayload>
     this.props = props;
   }
 
-  async verify(token: string): Promise<Payload & { exp: string; iat: string }> {
+  async verify(token: string): Promise<Payload & JWTData> {
     return new Promise((resolve, reject) => {
       verify(
         token,
@@ -27,14 +31,14 @@ export class JWTServiceJsonWebToken<Payload extends JWTPayload>
           if (err) {
             reject(err);
           } else {
-            resolve(payload as Payload & { exp: string; iat: string });
+            resolve(payload as Payload & JWTData);
           }
         }
       );
     });
   }
 
-  async sign(payload: Payload): Promise<string> {
+  async sign(payload: Payload, data: JWTData): Promise<string> {
     return new Promise((resolve, reject) => {
       sign(
         payload,
@@ -42,6 +46,9 @@ export class JWTServiceJsonWebToken<Payload extends JWTPayload>
         {
           algorithm: this.props.algorithm,
           expiresIn: this.props.expiration,
+          issuer: data.iss,
+          subject: data.sub,
+          audience: data.aud,
         },
         (err, token) => {
           if (err) {

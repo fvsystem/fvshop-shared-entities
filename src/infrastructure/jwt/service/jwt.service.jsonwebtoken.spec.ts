@@ -24,7 +24,7 @@ describe('JWTServiceJsonWebToken', () => {
       { iss: 'test', sub: 'test', aud: 'test' }
     );
     expect(token).not.toBe('1');
-    const payload = await service.verify(token);
+    const payload = await service.verify(token, { maxAge: '20s' });
     expect(payload.id).toBe('1');
     expect(payload.exp).toBeDefined();
     expect(payload.iat).toBeDefined();

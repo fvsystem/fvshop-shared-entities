@@ -3,6 +3,7 @@ import {
   JWTData,
   JWTPayload,
   JWTServicesInterface,
+  JWTVerifyOptions,
 } from './jwt.service.interface';
 
 export interface JWTServiceJsonWebTokenProps {
@@ -21,12 +22,18 @@ export class JWTServiceJsonWebToken<Payload extends JWTPayload>
     this.props = props;
   }
 
-  async verify(token: string): Promise<Payload & JWTData> {
+  async verify(
+    token: string,
+    options?: JWTVerifyOptions
+  ): Promise<Payload & JWTData> {
     return new Promise((resolve, reject) => {
       verify(
         token,
         this.props.publicKey,
-        { algorithms: [this.props.algorithm] },
+        {
+          algorithms: [this.props.algorithm],
+          maxAge: options?.maxAge || '20s',
+        },
         (err, payload) => {
           if (err) {
             reject(err);

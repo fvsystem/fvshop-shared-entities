@@ -1,4 +1,4 @@
-import { LoggerServiceWinton, logger } from './logger.service.winton';
+import { LoggerServiceWinton, logger } from './logger.service.winston';
 
 describe('Logger service winston', () => {
   it('shoud log', () => {

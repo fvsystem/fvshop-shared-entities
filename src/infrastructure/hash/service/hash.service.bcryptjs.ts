@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { HashServiceInterface } from './hash.service.interface';
+import { HashServiceInterface } from '@root/application';
 
 export class HashServiceBCryptJS implements HashServiceInterface {
   private readonly saltRounds: number;

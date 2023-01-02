@@ -1,5 +1,5 @@
 import Redis, { RedisOptions } from 'ioredis';
-import { CacheServiceInterface } from './cache.service.interface';
+import { CacheServiceInterface } from '@root/application';
 
 export class CacheServiceIoRedis implements CacheServiceInterface {
   private readonly redis: Redis;

@@ -1,5 +1,5 @@
 import { createLogger, format, transports } from 'winston';
-import { LoggerServiceInterface } from './logger.service.interface';
+import { LoggerServiceInterface } from '@root/application';
 
 const { combine, timestamp, label, json, prettyPrint } = format;
 

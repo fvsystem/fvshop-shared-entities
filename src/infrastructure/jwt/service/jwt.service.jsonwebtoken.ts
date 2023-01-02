@@ -4,7 +4,7 @@ import {
   JWTPayload,
   JWTServicesInterface,
   JWTVerifyOptions,
-} from './jwt.service.interface';
+} from '@root/application';
 
 export interface JWTServiceJsonWebTokenProps {
   privateKey: string;

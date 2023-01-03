@@ -28,6 +28,7 @@
         "camelcase": "off",
         "import/no-cycle": "off",
         "consistent-return": "off",
+        "max-classes-per-file": "off",
         "class-methods-use-this": "off",
         "import/extensions": [
             "error",

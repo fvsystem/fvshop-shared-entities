@@ -19,6 +19,36 @@ jobs:
           scope: '@fvsystem'
       - run: npm ci
       - run: npm test
+      - name: Upload node_modules
+        uses: actions/upload-artifact@v3
+        with:
+          name: nodeModules
+          path: node_modules
+      - name: Upload build
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist
+  publish_npm:
+    needs: build
+    runs-on: ubuntu-latest 
+    steps:
+      - uses: actions/checkout@v3
+      # Setup .npmrc file to publish to GitHub Packages
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          registry-url: 'https://npm.pkg.github.com'
+          # Defaults to the user or organization that owns the workflow file
+          scope: '@fvsystem'
+      - name: Download node_modules
+        uses: actions/download-artifact@v3
+        with:
+          name: nodeModules
+      - name: Download dist
+        uses: actions/download-artifact@v3
+        with:
+          name: dist
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

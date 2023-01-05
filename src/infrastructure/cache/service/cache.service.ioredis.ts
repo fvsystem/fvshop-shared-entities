@@ -10,7 +10,7 @@ export class CacheServiceIoRedis implements CacheServiceInterface {
 
   async get<T = unknown>(key: string): Promise<T | null> {
     const value = await this.redis.get(key);
-    return value ? JSON.parse(value) : null;
+    return value ? (JSON.parse(value) as T) : null;
   }
 
   async set<T = unknown>(

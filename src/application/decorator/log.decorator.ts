@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import { LoggerServiceWinton } from '@root/infrastructure';
 import { LoggerServiceInterface } from '../service/logger';
 
 function isPromise(p) {
@@ -21,7 +22,8 @@ function returnsPromise(f) {
   return false;
 }
 
-export function log(logger: LoggerServiceInterface) {
+export function log(logger?: LoggerServiceInterface) {
+  const loggerService = logger || new LoggerServiceWinton();
   return function (
     target: any,
     propertyKey: string,
@@ -37,7 +39,7 @@ export function log(logger: LoggerServiceInterface) {
       } else {
         result = originalMethod.apply(this, args);
       }
-      logger.info(`${propertyKey}(${args}) => ${result}`);
+      loggerService.info(`${propertyKey}(${args}) => ${result}`);
       return result;
     };
     return descriptor;

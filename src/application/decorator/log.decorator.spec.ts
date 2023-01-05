@@ -1,3 +1,4 @@
+import { logger as winstonLogger } from '@root/infrastructure/logger';
 import { log } from './log.decorator';
 
 describe('log', () => {
@@ -17,6 +18,19 @@ describe('log', () => {
     const test = new Test();
     test.test(1, 2);
     expect(logger.info).toHaveBeenCalledWith('test(1,2) => 3');
+  });
+
+  it('should log with Winston', () => {
+    const infoSpy = jest.spyOn(winstonLogger, 'info');
+    class Test {
+      @log(winstonLogger)
+      test(a: number, b: number) {
+        return a + b;
+      }
+    }
+    const test = new Test();
+    test.test(1, 2);
+    expect(infoSpy).toHaveBeenCalledWith('test(1,2) => 3');
   });
 
   it('should log async function', async () => {

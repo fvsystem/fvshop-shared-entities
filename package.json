@@ -1,6 +1,6 @@
 {
   "name": "@fvsystem/fvshop-shared-entities",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "description": "Template for typescript node",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -74,8 +74,12 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.3",
     "ioredis": "^5.2.4",
     "jsonwebtoken": "^9.0.0",
+    "sequelize": "^6.28.0",
+    "sequelize-typescript": "^2.1.5",
+    "sqlite3": "^5.1.4",
     "uuid": "^9.0.0",
     "winston": "^3.8.2",
     "zod": "^3.20.2"

@@ -4,3 +4,4 @@ export * from './validator';
 export * from './service';
 export * from './decorator';
 export * from './facade';
+export * from './repository';

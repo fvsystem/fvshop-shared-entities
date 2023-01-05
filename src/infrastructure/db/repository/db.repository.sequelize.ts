@@ -14,11 +14,13 @@ export abstract class RepositorySequelize<
 {
   protected readonly model: ModelCtor<Model<Props & { id: string }>>;
 
-  protected readonly toEntity: (props: Props & { id: string }) => E;
+  protected readonly toEntity: (
+    props: Props & { id: string }
+  ) => E | Promise<E>;
 
   constructor(
     model: ModelCtor<Model<Props & { id: string }>>,
-    toEntity: (props: Props & { id: string }) => E
+    toEntity: (props: Props & { id: string }) => E | Promise<E>
   ) {
     this.model = model;
     this.toEntity = toEntity;
@@ -26,7 +28,9 @@ export abstract class RepositorySequelize<
 
   async findAll(): Promise<E[]> {
     const entities = await this.model.findAll();
-    return entities.map((entity) => this.toEntity(entity.dataValues));
+    return Promise.all(
+      entities.map((entity) => this.toEntity(entity.dataValues))
+    );
   }
 
   async findById(id: string | UniqueEntityId): Promise<E> {

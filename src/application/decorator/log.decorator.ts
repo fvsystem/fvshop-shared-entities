@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { LoggerServiceWinton } from '@root/infrastructure';
+import { LoggerServiceWinton } from '@root/infrastructure/logger';
 import { LoggerServiceInterface } from '../service/logger';
 
 function isPromise(p) {

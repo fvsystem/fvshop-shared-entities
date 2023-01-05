@@ -1,6 +1,6 @@
 {
   "name": "@fvsystem/fvshop-shared-entities",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "description": "Template for typescript node",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",

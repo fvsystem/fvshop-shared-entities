@@ -7,7 +7,7 @@ import {
 } from '@root/application';
 
 export interface JWTServiceJsonWebTokenProps {
-  privateKey: string;
+  privateKey?: string;
   algorithm: Algorithm;
   expiration: string;
   publicKey: string;
@@ -47,6 +47,10 @@ export class JWTServiceJsonWebToken<Payload extends JWTPayload>
 
   async sign(payload: Payload, data: JWTData): Promise<string> {
     return new Promise((resolve, reject) => {
+      if (!this.props.privateKey) {
+        reject(new Error('Private key is not defined'));
+        return;
+      }
       sign(
         payload,
         this.props.privateKey,

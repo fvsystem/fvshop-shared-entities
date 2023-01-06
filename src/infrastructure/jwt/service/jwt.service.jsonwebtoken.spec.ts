@@ -45,6 +45,17 @@ describe('JWTServiceJsonWebToken', () => {
     ).rejects.toThrow();
   });
 
+  it('should not sign with without privateKey', async () => {
+    const service = new JWTServiceJsonWebToken<{ id: string }>({
+      algorithm: 'RS256',
+      expiration: '1h',
+      publicKey,
+    });
+    expect(() =>
+      service.sign({ id: '1' }, { iss: 'test', sub: 'test', aud: 'test' })
+    ).rejects.toThrow();
+  });
+
   it('should not verify with invalid token', async () => {
     const service = new JWTServiceJsonWebToken<{ id: string }>({
       algorithm: 'RS256',

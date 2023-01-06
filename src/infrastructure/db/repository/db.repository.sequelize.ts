@@ -11,13 +11,13 @@ export abstract class RepositorySequelize<E extends Entity, Props = any>
 {
   protected readonly model: ModelCtor<Model<Props, Props>>;
 
-  protected readonly toEntity: (props: Props) => E | Promise<E>;
+  protected readonly toEntity: (props: Props) => E;
 
   protected readonly toModel: (entity: E) => Props;
 
   constructor(
     model: ModelCtor<Model<Props, Props>>,
-    toEntity: (props: Props) => E | Promise<E>,
+    toEntity: (props: Props) => E,
     toModel: (entity: E) => Props
   ) {
     this.model = model;
@@ -52,7 +52,7 @@ export abstract class RepositorySequelize<E extends Entity, Props = any>
     if (!model) {
       throw new NotFoundError();
     }
-    const modelProps = await this.toModel(entity);
+    const modelProps = this.toModel(entity);
     await model.update(modelProps);
   }
 

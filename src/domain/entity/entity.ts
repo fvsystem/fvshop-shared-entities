@@ -1,10 +1,12 @@
 import { UniqueEntityId } from '../value-object/unique-entity-id.vo';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type EntityProps = Record<string, any>;
+export type EntityDTOProps = {
+  id: string;
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export abstract class Entity<Props extends EntityProps = any> {
+export abstract class Entity<Props = any> {
   public readonly uniqueEntityId: UniqueEntityId;
 
   constructor(public readonly props: Props, id?: UniqueEntityId) {
@@ -13,10 +15,6 @@ export abstract class Entity<Props extends EntityProps = any> {
 
   get id(): string {
     return this.uniqueEntityId.value;
-  }
-
-  toDTO(): Props & { id: string } {
-    return { ...this.props, id: this.id };
   }
 
   toJSON(): Required<{ id: string } & Props> {

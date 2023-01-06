@@ -44,9 +44,17 @@ class EntityModel extends Model<FakeEntityProps & { id: string }> {
 const mapper = (props: FakeEntityProps & { id: string }): FakeEntity =>
   new FakeEntity({ name: props.name }, props.id);
 
-class FakeRepository extends RepositorySequelize<FakeEntity, FakeEntityProps> {
+const toModel = (entity: FakeEntity): FakeEntityProps & { id: string } => ({
+  id: entity.id,
+  name: entity.name,
+});
+
+class FakeRepository extends RepositorySequelize<
+  FakeEntity,
+  FakeEntityProps & { id: string }
+> {
   constructor() {
-    super(EntityModel, mapper);
+    super(EntityModel, mapper, toModel);
   }
 }
 

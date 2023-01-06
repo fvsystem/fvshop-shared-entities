@@ -1,29 +1,28 @@
 import {
   Entity,
-  EntityProps,
   NotFoundError,
   RepositoryInterface,
   UniqueEntityId,
 } from '@root/domain';
 import { Model, ModelCtor } from 'sequelize-typescript';
 
-export abstract class RepositorySequelize<
-  E extends Entity,
-  Props extends EntityProps
-> implements RepositoryInterface<E>
+export abstract class RepositorySequelize<E extends Entity, Props = any>
+  implements RepositoryInterface<E>
 {
-  protected readonly model: ModelCtor<Model<Props & { id: string }>>;
+  protected readonly model: ModelCtor<Model<Props, Props>>;
 
-  protected readonly toEntity: (
-    props: Props & { id: string }
-  ) => E | Promise<E>;
+  protected readonly toEntity: (props: Props) => E | Promise<E>;
+
+  protected readonly toModel: (entity: E) => Props;
 
   constructor(
-    model: ModelCtor<Model<Props & { id: string }>>,
-    toEntity: (props: Props & { id: string }) => E | Promise<E>
+    model: ModelCtor<Model<Props, Props>>,
+    toEntity: (props: Props) => E | Promise<E>,
+    toModel: (entity: E) => Props
   ) {
     this.model = model;
     this.toEntity = toEntity;
+    this.toModel = toModel;
   }
 
   async findAll(): Promise<E[]> {
@@ -43,7 +42,8 @@ export abstract class RepositorySequelize<
   }
 
   async insert(entity: E): Promise<void> {
-    const model = await this.model.create(entity.toDTO());
+    const modelProps = this.toModel(entity);
+    const model = await this.model.create(modelProps as any);
     await model.save();
   }
 
@@ -52,7 +52,8 @@ export abstract class RepositorySequelize<
     if (!model) {
       throw new NotFoundError();
     }
-    await model.update(entity.toDTO());
+    const modelProps = await this.toModel(entity);
+    await model.update(modelProps);
   }
 
   async delete(id: string | UniqueEntityId): Promise<void> {
@@ -65,6 +66,8 @@ export abstract class RepositorySequelize<
   }
 
   async bulkInsert(entities: E[]): Promise<void> {
-    await this.model.bulkCreate(entities.map((entity) => entity.toDTO()));
+    const modelProps = entities.map((entity) => this.toModel(entity));
+
+    await this.model.bulkCreate(modelProps as any);
   }
 }

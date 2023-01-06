@@ -51,6 +51,7 @@ const toModel = (entity: FakeEntity): FakeEntityProps & { id: string } => ({
 
 class FakeRepository extends RepositorySequelize<
   FakeEntity,
+  FakeEntityProps & { id: string },
   FakeEntityProps & { id: string }
 > {
   constructor() {

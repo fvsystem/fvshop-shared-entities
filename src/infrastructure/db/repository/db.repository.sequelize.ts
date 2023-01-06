@@ -6,19 +6,22 @@ import {
 } from '@root/domain';
 import { Model, ModelCtor } from 'sequelize-typescript';
 
-export abstract class RepositorySequelize<E extends Entity, Props = any>
-  implements RepositoryInterface<E>
+export abstract class RepositorySequelize<
+  E extends Entity,
+  PropsDTO = any,
+  PropsCreation = any
+> implements RepositoryInterface<E>
 {
-  protected readonly model: ModelCtor<Model<Props, Props>>;
+  protected readonly model: ModelCtor<Model<PropsDTO, PropsCreation>>;
 
-  protected readonly toEntity: (props: Props) => E;
+  protected readonly toEntity: (props: PropsDTO) => E;
 
-  protected readonly toModel: (entity: E) => Props;
+  protected readonly toModel: (entity: E) => PropsDTO;
 
   constructor(
-    model: ModelCtor<Model<Props, Props>>,
-    toEntity: (props: Props) => E,
-    toModel: (entity: E) => Props
+    model: ModelCtor<Model<PropsDTO, PropsCreation>>,
+    toEntity: (props: PropsDTO) => E,
+    toModel: (entity: E) => PropsDTO
   ) {
     this.model = model;
     this.toEntity = toEntity;
@@ -42,8 +45,8 @@ export abstract class RepositorySequelize<E extends Entity, Props = any>
   }
 
   async insert(entity: E): Promise<void> {
-    const modelProps = this.toModel(entity);
-    const model = await this.model.create(modelProps as any);
+    const modelPropsDTO = this.toModel(entity);
+    const model = await this.model.create(modelPropsDTO as any);
     await model.save();
   }
 
@@ -52,8 +55,8 @@ export abstract class RepositorySequelize<E extends Entity, Props = any>
     if (!model) {
       throw new NotFoundError();
     }
-    const modelProps = this.toModel(entity);
-    await model.update(modelProps);
+    const modelPropsDTO = this.toModel(entity);
+    await model.update(modelPropsDTO);
   }
 
   async delete(id: string | UniqueEntityId): Promise<void> {
@@ -66,8 +69,8 @@ export abstract class RepositorySequelize<E extends Entity, Props = any>
   }
 
   async bulkInsert(entities: E[]): Promise<void> {
-    const modelProps = entities.map((entity) => this.toModel(entity));
+    const modelPropsDTO = entities.map((entity) => this.toModel(entity));
 
-    await this.model.bulkCreate(modelProps as any);
+    await this.model.bulkCreate(modelPropsDTO as any);
   }
 }

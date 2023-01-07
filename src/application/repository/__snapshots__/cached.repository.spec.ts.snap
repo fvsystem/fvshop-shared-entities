@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CachedRepository should cache bulkInsert and invalidate find_all 1`] = `
-FakeCacheService {
+CacheServiceMock {
   "cache": Object {
-    "FakeCachedRepository:_list": undefined,
-    "FakeCachedRepository:find_id:088f6493-f1d4-47ec-b922-7c7a6655f02e": Object {
+    "CachedRepositoryMock:_list": undefined,
+    "CachedRepositoryMock:find_id:088f6493-f1d4-47ec-b922-7c7a6655f02e": Object {
       "id": "088f6493-f1d4-47ec-b922-7c7a6655f02e",
       "name": "test2",
     },
-    "FakeCachedRepository:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28": Object {
+    "CachedRepositoryMock:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28": Object {
       "id": "7c195903-6ef3-43ed-b181-0ccb14876e28",
       "name": "test",
     },
@@ -16,7 +16,7 @@ FakeCacheService {
   "delete": [MockFunction] {
     "calls": Array [
       Array [
-        "FakeCachedRepository:_list",
+        "CachedRepositoryMock:_list",
       ],
     ],
     "results": Array [
@@ -29,14 +29,14 @@ FakeCacheService {
   "set": [MockFunction] {
     "calls": Array [
       Array [
-        "FakeCachedRepository:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28",
+        "CachedRepositoryMock:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28",
         Object {
           "id": "7c195903-6ef3-43ed-b181-0ccb14876e28",
           "name": "test",
         },
       ],
       Array [
-        "FakeCachedRepository:find_id:088f6493-f1d4-47ec-b922-7c7a6655f02e",
+        "CachedRepositoryMock:find_id:088f6493-f1d4-47ec-b922-7c7a6655f02e",
         Object {
           "id": "088f6493-f1d4-47ec-b922-7c7a6655f02e",
           "name": "test2",
@@ -58,21 +58,21 @@ FakeCacheService {
 `;
 
 exports[`CachedRepository should cache delete and invalidate find_all 1`] = `
-FakeCacheService {
+CacheServiceMock {
   "cache": Object {
-    "FakeCachedRepository:_list": undefined,
-    "FakeCachedRepository:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28": undefined,
+    "CachedRepositoryMock:_list": undefined,
+    "CachedRepositoryMock:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28": undefined,
   },
   "delete": [MockFunction] {
     "calls": Array [
       Array [
-        "FakeCachedRepository:_list",
+        "CachedRepositoryMock:_list",
       ],
       Array [
-        "FakeCachedRepository:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28",
+        "CachedRepositoryMock:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28",
       ],
       Array [
-        "FakeCachedRepository:_list",
+        "CachedRepositoryMock:_list",
       ],
     ],
     "results": Array [
@@ -93,7 +93,7 @@ FakeCacheService {
   "set": [MockFunction] {
     "calls": Array [
       Array [
-        "FakeCachedRepository:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28",
+        "CachedRepositoryMock:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28",
         Object {
           "id": "7c195903-6ef3-43ed-b181-0ccb14876e28",
           "name": "test",
@@ -111,17 +111,17 @@ FakeCacheService {
 `;
 
 exports[`CachedRepository should cache findAll 1`] = `
-FakeCacheService {
+CacheServiceMock {
   "cache": Object {
-    "FakeCachedRepository:_list": Promise {},
+    "CachedRepositoryMock:_list": Promise {},
   },
   "get": [MockFunction] {
     "calls": Array [
       Array [
-        "FakeCachedRepository:_list",
+        "CachedRepositoryMock:_list",
       ],
       Array [
-        "FakeCachedRepository:_list",
+        "CachedRepositoryMock:_list",
       ],
     ],
     "results": Array [
@@ -139,9 +139,9 @@ FakeCacheService {
 `;
 
 exports[`CachedRepository should cache findById 1`] = `
-FakeCacheService {
+CacheServiceMock {
   "cache": Object {
-    "FakeCachedRepository:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28": Object {
+    "CachedRepositoryMock:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28": Object {
       "id": "7c195903-6ef3-43ed-b181-0ccb14876e28",
       "name": "test",
     },
@@ -149,10 +149,10 @@ FakeCacheService {
   "get": [MockFunction] {
     "calls": Array [
       Array [
-        "FakeCachedRepository:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28",
+        "CachedRepositoryMock:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28",
       ],
       Array [
-        "FakeCachedRepository:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28",
+        "CachedRepositoryMock:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28",
       ],
     ],
     "results": Array [
@@ -170,10 +170,10 @@ FakeCacheService {
 `;
 
 exports[`CachedRepository should cache insert and invalidate find_all 1`] = `
-FakeCacheService {
+CacheServiceMock {
   "cache": Object {
-    "FakeCachedRepository:_list": undefined,
-    "FakeCachedRepository:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28": Object {
+    "CachedRepositoryMock:_list": undefined,
+    "CachedRepositoryMock:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28": Object {
       "id": "7c195903-6ef3-43ed-b181-0ccb14876e28",
       "name": "test",
     },
@@ -181,7 +181,7 @@ FakeCacheService {
   "delete": [MockFunction] {
     "calls": Array [
       Array [
-        "FakeCachedRepository:_list",
+        "CachedRepositoryMock:_list",
       ],
     ],
     "results": Array [
@@ -194,7 +194,7 @@ FakeCacheService {
   "set": [MockFunction] {
     "calls": Array [
       Array [
-        "FakeCachedRepository:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28",
+        "CachedRepositoryMock:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28",
         Object {
           "id": "7c195903-6ef3-43ed-b181-0ccb14876e28",
           "name": "test",
@@ -212,10 +212,10 @@ FakeCacheService {
 `;
 
 exports[`CachedRepository should cache update and invalidate find_all 1`] = `
-FakeCacheService {
+CacheServiceMock {
   "cache": Object {
-    "FakeCachedRepository:_list": undefined,
-    "FakeCachedRepository:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28": Object {
+    "CachedRepositoryMock:_list": undefined,
+    "CachedRepositoryMock:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28": Object {
       "id": "7c195903-6ef3-43ed-b181-0ccb14876e28",
       "name": "test2",
     },
@@ -223,10 +223,10 @@ FakeCacheService {
   "delete": [MockFunction] {
     "calls": Array [
       Array [
-        "FakeCachedRepository:_list",
+        "CachedRepositoryMock:_list",
       ],
       Array [
-        "FakeCachedRepository:_list",
+        "CachedRepositoryMock:_list",
       ],
     ],
     "results": Array [
@@ -243,14 +243,14 @@ FakeCacheService {
   "set": [MockFunction] {
     "calls": Array [
       Array [
-        "FakeCachedRepository:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28",
+        "CachedRepositoryMock:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28",
         Object {
           "id": "7c195903-6ef3-43ed-b181-0ccb14876e28",
           "name": "test2",
         },
       ],
       Array [
-        "FakeCachedRepository:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28",
+        "CachedRepositoryMock:find_id:7c195903-6ef3-43ed-b181-0ccb14876e28",
         Object {
           "id": "7c195903-6ef3-43ed-b181-0ccb14876e28",
           "name": "test2",

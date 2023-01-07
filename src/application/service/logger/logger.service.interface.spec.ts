@@ -1,14 +1,5 @@
+import { LoggerMock } from './logger.mock';
 import { LoggerServiceInterface } from './logger.service.interface';
-
-class LoggerMock implements LoggerServiceInterface {
-  log = jest.fn();
-
-  info = jest.fn();
-
-  warn = jest.fn();
-
-  error = jest.fn();
-}
 
 describe('Logger Service Interface', () => {
   it('should be defined', () => {

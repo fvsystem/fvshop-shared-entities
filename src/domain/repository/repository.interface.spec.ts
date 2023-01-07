@@ -1,20 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { v4 as uuid } from 'uuid';
-import { Entity } from '../entity';
+import { EntityMock } from '../entity';
 import { UniqueEntityId } from '../value-object';
 import { SearchParams, SearchResult } from './index';
-
-interface FakeEntityProps {
-  name: string;
-}
-class FakeEntity extends Entity<FakeEntityProps> {
-  constructor(props: FakeEntityProps, id?: string) {
-    const idValue = id || uuid();
-    const uniqueEntityId = new UniqueEntityId(idValue);
-    super(props, uniqueEntityId);
-    this.props.name = props.name;
-  }
-}
 
 describe('Search Unit Tests', () => {
   describe('SearchParams Unit Tests', () => {
@@ -160,8 +147,8 @@ describe('Search Unit Tests', () => {
 
   describe('SearchResult Unit Tests', () => {
     test('constructor props', () => {
-      const entity1 = new FakeEntity({ name: 'entity1' });
-      const entity2 = new FakeEntity({ name: 'entity2' });
+      const entity1 = new EntityMock({ name: 'entity1' });
+      const entity2 = new EntityMock({ name: 'entity2' });
       let result = new SearchResult({
         items: [entity1, entity2] as any,
         total: 4,

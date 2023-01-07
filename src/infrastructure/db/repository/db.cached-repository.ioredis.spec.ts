@@ -1,12 +1,6 @@
-import {
-  Entity,
-  NotFoundError,
-  RepositoryInterface,
-  UniqueEntityId,
-} from '@root/domain';
-import { RedisOptions } from 'ioredis';
-import { v4 as uuid } from 'uuid';
-import { CachedRepositoryIoRedis } from './db.cached-repository.ioredis';
+import { EntityMock, NotFoundError } from '@root/domain';
+import { RepositoryMock } from '@root/domain/repository/repository.mock';
+import { CachedRepositoryIoRedisMock } from './ioredis-cached.repository.mock';
 
 const mockGet = jest.fn();
 const mockDel = jest.fn();
@@ -22,87 +16,19 @@ jest.mock('ioredis', () =>
   }))
 );
 
-interface FakeEntityProps {
-  name: string;
-}
-
-class FakeEntity extends Entity<FakeEntityProps> {
-  constructor(props: FakeEntityProps, id?: string) {
-    const idValue = id || uuid();
-    const uniqueEntityId = new UniqueEntityId(idValue);
-    super(props, uniqueEntityId);
-    this.props.name = props.name;
-  }
-
-  set name(name: string) {
-    this.props.name = name;
-  }
-
-  get name(): string {
-    return this.props.name;
-  }
-}
-
-class FakeRepository implements RepositoryInterface<FakeEntity> {
-  private entities: FakeEntity[] = [];
-
-  async findAll(): Promise<FakeEntity[]> {
-    return this.entities;
-  }
-
-  async delete(id: string | UniqueEntityId): Promise<void> {
-    const idValue = id instanceof UniqueEntityId ? id.value : id;
-    this.entities = this.entities.filter((e) => e.id !== idValue);
-  }
-
-  async findById(id: string | UniqueEntityId): Promise<FakeEntity> {
-    const idValue = id instanceof UniqueEntityId ? id.value : id;
-    const entity = this.entities.find((e) => e.id === idValue);
-    if (!entity) {
-      throw new NotFoundError();
-    }
-    return entity;
-  }
-
-  async insert(entity: FakeEntity): Promise<void> {
-    this.entities.push(entity);
-  }
-
-  async bulkInsert(entities: FakeEntity[]): Promise<void> {
-    this.entities.push(...entities);
-  }
-
-  async update(entity: FakeEntity): Promise<void> {
-    const index = this.entities.findIndex((e) => e.id === entity.id);
-    if (index === -1) {
-      throw new NotFoundError();
-    }
-    this.entities[index] = entity;
-  }
-}
-
-class FakeCachedRepositoryIoRedis extends CachedRepositoryIoRedis<FakeEntity> {
-  constructor(
-    options: RedisOptions,
-    repository: RepositoryInterface<FakeEntity>
-  ) {
-    super(options, repository);
-  }
-}
-
 describe('CachedRepositoryIoRedis', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
   it('should cache findAll', async () => {
-    const repository = new FakeRepository();
+    const repository = new RepositoryMock();
 
     const findAllSpy = jest.spyOn(repository, 'findAll');
-    const cachedRepository = new FakeCachedRepositoryIoRedis(
+    const cachedRepository = new CachedRepositoryIoRedisMock(
       { host: 'localhost' },
       repository
     );
-    const entity = new FakeEntity(
+    const entity = new EntityMock(
       { name: 'test' },
       '7c195903-6ef3-43ed-b181-0ccb14876e28'
     );
@@ -115,18 +41,18 @@ describe('CachedRepositoryIoRedis', () => {
     expect(findAllSpy).toHaveBeenCalledTimes(1);
     expect(mockGet).toHaveBeenNthCalledWith(
       2,
-      'FakeCachedRepositoryIoRedis:_list'
+      'CachedRepositoryIoRedisMock:_list'
     );
   });
 
   it('should cache findById', async () => {
-    const repository = new FakeRepository();
+    const repository = new RepositoryMock();
     const findByIdSpy = jest.spyOn(repository, 'findById');
-    const cachedRepository = new FakeCachedRepositoryIoRedis(
+    const cachedRepository = new CachedRepositoryIoRedisMock(
       { host: 'localhost' },
       repository
     );
-    const entity = new FakeEntity(
+    const entity = new EntityMock(
       { name: 'test' },
       '7c195903-6ef3-43ed-b181-0ccb14876e28'
     );
@@ -141,18 +67,18 @@ describe('CachedRepositoryIoRedis', () => {
     expect(findByIdSpy).toHaveBeenCalledTimes(1);
     expect(mockGet).toHaveBeenNthCalledWith(
       2,
-      `FakeCachedRepositoryIoRedis:find_id:${entity.id}`
+      `CachedRepositoryIoRedisMock:find_id:${entity.id}`
     );
   });
 
   it('should cache insert and invalidate find_all', async () => {
-    const repository = new FakeRepository();
+    const repository = new RepositoryMock();
     const insertSpy = jest.spyOn(repository, 'insert');
-    const cachedRepository = new FakeCachedRepositoryIoRedis(
+    const cachedRepository = new CachedRepositoryIoRedisMock(
       { host: 'localhost' },
       repository
     );
-    const entity = new FakeEntity(
+    const entity = new EntityMock(
       { name: 'test' },
       '7c195903-6ef3-43ed-b181-0ccb14876e28'
     );
@@ -160,23 +86,23 @@ describe('CachedRepositoryIoRedis', () => {
     expect(insertSpy).toHaveBeenCalledTimes(1);
     expect(mockSet).toHaveBeenNthCalledWith(
       1,
-      `FakeCachedRepositoryIoRedis:find_id:${entity.id}`,
+      `CachedRepositoryIoRedisMock:find_id:${entity.id}`,
       JSON.stringify(entity)
     );
     expect(mockDel).toHaveBeenNthCalledWith(
       1,
-      'FakeCachedRepositoryIoRedis:_list'
+      'CachedRepositoryIoRedisMock:_list'
     );
   });
 
   it('should cache update and invalidate find_all', async () => {
-    const repository = new FakeRepository();
+    const repository = new RepositoryMock();
     const updateSpy = jest.spyOn(repository, 'update');
-    const cachedRepository = new FakeCachedRepositoryIoRedis(
+    const cachedRepository = new CachedRepositoryIoRedisMock(
       { host: 'localhost' },
       repository
     );
-    const entity = new FakeEntity(
+    const entity = new EntityMock(
       { name: 'test' },
       '7c195903-6ef3-43ed-b181-0ccb14876e28'
     );
@@ -186,12 +112,12 @@ describe('CachedRepositoryIoRedis', () => {
     expect(updateSpy).toHaveBeenCalledTimes(1);
     expect(mockSet).toHaveBeenNthCalledWith(
       2,
-      `FakeCachedRepositoryIoRedis:find_id:${entity.id}`,
+      `CachedRepositoryIoRedisMock:find_id:${entity.id}`,
       JSON.stringify(entity)
     );
     expect(mockDel).toHaveBeenNthCalledWith(
       1,
-      'FakeCachedRepositoryIoRedis:_list'
+      'CachedRepositoryIoRedisMock:_list'
     );
     const cachedEntity = await cachedRepository.findById(entity.id);
     expect(JSON.stringify(cachedEntity)).toEqual(JSON.stringify(entity));
@@ -199,13 +125,13 @@ describe('CachedRepositoryIoRedis', () => {
   });
 
   it('should cache delete and invalidate find_all', async () => {
-    const repository = new FakeRepository();
+    const repository = new RepositoryMock();
     const deleteRepoSpy = jest.spyOn(repository, 'delete');
-    const cachedRepository = new FakeCachedRepositoryIoRedis(
+    const cachedRepository = new CachedRepositoryIoRedisMock(
       { host: 'localhost' },
       repository
     );
-    const entity = new FakeEntity(
+    const entity = new EntityMock(
       { name: 'test' },
       '7c195903-6ef3-43ed-b181-0ccb14876e28'
     );
@@ -214,16 +140,16 @@ describe('CachedRepositoryIoRedis', () => {
     expect(deleteRepoSpy).toHaveBeenCalledTimes(1);
     expect(mockSet).toHaveBeenNthCalledWith(
       1,
-      `FakeCachedRepositoryIoRedis:find_id:${entity.id}`,
+      `CachedRepositoryIoRedisMock:find_id:${entity.id}`,
       JSON.stringify(entity)
     );
     expect(mockDel).toHaveBeenNthCalledWith(
       1,
-      'FakeCachedRepositoryIoRedis:_list'
+      'CachedRepositoryIoRedisMock:_list'
     );
     expect(mockDel).toHaveBeenNthCalledWith(
       2,
-      `FakeCachedRepositoryIoRedis:find_id:${entity.id}`
+      `CachedRepositoryIoRedisMock:find_id:${entity.id}`
     );
     expect(() => cachedRepository.findById(entity.id)).rejects.toThrowError(
       NotFoundError
@@ -231,17 +157,17 @@ describe('CachedRepositoryIoRedis', () => {
   });
 
   it('should cache bulkInsert and invalidate find_all', async () => {
-    const repository = new FakeRepository();
+    const repository = new RepositoryMock();
     const bukInsertSpy = jest.spyOn(repository, 'bulkInsert');
-    const cachedRepository = new FakeCachedRepositoryIoRedis(
+    const cachedRepository = new CachedRepositoryIoRedisMock(
       { host: 'localhost' },
       repository
     );
-    const entity = new FakeEntity(
+    const entity = new EntityMock(
       { name: 'test' },
       '7c195903-6ef3-43ed-b181-0ccb14876e28'
     );
-    const entity2 = new FakeEntity(
+    const entity2 = new EntityMock(
       { name: 'test2' },
       '088f6493-f1d4-47ec-b922-7c7a6655f02e'
     );
@@ -249,17 +175,17 @@ describe('CachedRepositoryIoRedis', () => {
     expect(bukInsertSpy).toHaveBeenCalledTimes(1);
     expect(mockSet).toHaveBeenNthCalledWith(
       1,
-      `FakeCachedRepositoryIoRedis:find_id:${entity.id}`,
+      `CachedRepositoryIoRedisMock:find_id:${entity.id}`,
       JSON.stringify(entity)
     );
     expect(mockSet).toHaveBeenNthCalledWith(
       2,
-      `FakeCachedRepositoryIoRedis:find_id:${entity2.id}`,
+      `CachedRepositoryIoRedisMock:find_id:${entity2.id}`,
       JSON.stringify(entity2)
     );
     expect(mockDel).toHaveBeenNthCalledWith(
       1,
-      'FakeCachedRepositoryIoRedis:_list'
+      'CachedRepositoryIoRedisMock:_list'
     );
   });
 });

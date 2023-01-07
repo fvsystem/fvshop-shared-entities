@@ -1,4 +1,4 @@
-import { Entity, NotFoundError, UniqueEntityId } from '@root/domain';
+import { EntityMock, MockProps, NotFoundError } from '@root/domain';
 import { setupSequelize } from '@root/infrastructure/testing';
 import {
   Column,
@@ -7,32 +7,10 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { v4 as uuid } from 'uuid';
 import { RepositorySequelize } from './db.repository.sequelize';
 
-interface FakeEntityProps {
-  name: string;
-}
-
-class FakeEntity extends Entity<FakeEntityProps> {
-  constructor(props: FakeEntityProps, id?: string) {
-    const idValue = id || uuid();
-    const uniqueEntityId = new UniqueEntityId(idValue);
-    super(props, uniqueEntityId);
-    this.props.name = props.name;
-  }
-
-  set name(name: string) {
-    this.props.name = name;
-  }
-
-  get name(): string {
-    return this.props.name;
-  }
-}
-
 @Table({ tableName: 'fake_entity' })
-class EntityModel extends Model<FakeEntityProps & { id: string }> {
+class EntityModel extends Model<MockProps & { id: string }> {
   @PrimaryKey
   @Column({ type: DataType.UUID })
   declare id: string;
@@ -41,18 +19,18 @@ class EntityModel extends Model<FakeEntityProps & { id: string }> {
   declare name: string;
 }
 
-const mapper = (props: FakeEntityProps & { id: string }): FakeEntity =>
-  new FakeEntity({ name: props.name }, props.id);
+const mapper = (props: MockProps & { id: string }): EntityMock =>
+  new EntityMock({ name: props.name }, props.id);
 
-const toModel = (entity: FakeEntity): FakeEntityProps & { id: string } => ({
+const toModel = (entity: EntityMock): MockProps & { id: string } => ({
   id: entity.id,
   name: entity.name,
 });
 
 class FakeRepository extends RepositorySequelize<
-  FakeEntity,
-  FakeEntityProps & { id: string },
-  FakeEntityProps & { id: string }
+  EntityMock,
+  MockProps & { id: string },
+  MockProps & { id: string }
 > {
   constructor() {
     super(EntityModel, mapper, toModel);
@@ -63,7 +41,7 @@ describe('SequelizeRepository', () => {
   setupSequelize({ models: [EntityModel] });
 
   it('should insert', async () => {
-    const entity = new FakeEntity({ name: 'test' });
+    const entity = new EntityMock({ name: 'test' });
     const repository = new FakeRepository();
     await repository.insert(entity);
     const result = await repository.findById(entity.id);
@@ -72,8 +50,8 @@ describe('SequelizeRepository', () => {
   });
 
   it('should  bulk insert', async () => {
-    const entity = new FakeEntity({ name: 'test' });
-    const entity2 = new FakeEntity({ name: 'test2' });
+    const entity = new EntityMock({ name: 'test' });
+    const entity2 = new EntityMock({ name: 'test2' });
     const repository = new FakeRepository();
     await repository.bulkInsert([entity, entity2]);
     const result = await repository.findAll();
@@ -84,7 +62,7 @@ describe('SequelizeRepository', () => {
   });
 
   it('should update', async () => {
-    const entity = new FakeEntity({ name: 'test' });
+    const entity = new EntityMock({ name: 'test' });
     const repository = new FakeRepository();
     await repository.insert(entity);
     const result = await repository.findById(entity.id);
@@ -98,7 +76,7 @@ describe('SequelizeRepository', () => {
   });
 
   it('should not update inexistent entity', async () => {
-    const entity = new FakeEntity({ name: 'test' });
+    const entity = new EntityMock({ name: 'test' });
     const repository = new FakeRepository();
     await expect(() => repository.update(entity)).rejects.toThrow(
       NotFoundError
@@ -111,7 +89,7 @@ describe('SequelizeRepository', () => {
   });
 
   it('should delete', async () => {
-    const entity = new FakeEntity({ name: 'test' });
+    const entity = new EntityMock({ name: 'test' });
     const repository = new FakeRepository();
     await repository.insert(entity);
     const result = await repository.findById(entity.id);

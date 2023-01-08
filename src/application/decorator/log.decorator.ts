@@ -22,9 +22,9 @@ function toString(arg: unknown): string {
   if (typeof arg === 'object') {
     return `{${Object.keys(arg).reduce((acc, key, cur, arr) => {
       if (cur === arr.length - 1) {
-        return `${acc}${key}:${arg[key]}`;
+        return `${acc}${key}:${toString(arg[key])}`;
       }
-      return `${acc}${key}:${arg[key]},`;
+      return `${acc}${key}:${toString(arg[key])},`;
     }, '')}}`;
   }
 

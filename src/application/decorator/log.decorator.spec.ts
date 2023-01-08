@@ -67,13 +67,15 @@ describe('log', () => {
       test(numbers: { a: number; b: number }) {
         return new Promise((resolve) => {
           setTimeout(() => {
-            resolve(numbers.a + numbers.b);
+            resolve({ result: { sum: numbers.a + numbers.b } });
           }, 2);
         });
       }
     }
     const test = new Test();
     await test.test({ a: 1, b: 2 });
-    expect(logger.info).toHaveBeenCalledWith('name({a:1,b:2}) => 3');
+    expect(logger.info).toHaveBeenCalledWith(
+      'name({a:1,b:2}) => {result:{sum:3}}'
+    );
   });
 });

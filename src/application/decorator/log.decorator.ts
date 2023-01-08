@@ -43,14 +43,24 @@ export function log(name: string, logger?: LoggerServiceInterface) {
     descriptor.value = async function (...args: any[]) {
       const result = originalMethod.apply(this, args);
 
-      if (result.then) {
-        result.then((res) => {
-          loggerService.info(`${name}(${toString(args)}) => ${toString(res)}`);
+      if (result.then && typeof result.then === 'function') {
+        return new Promise((resolve, reject) => {
+          result
+            .then((res) => {
+              loggerService.info(
+                `${name}(${toString(args)}) => ${toString(res)}`
+              );
+              resolve(res);
+            })
+            .catch((err) => {
+              loggerService.error(
+                `${name}(${toString(args)}) => ${err.message}`
+              );
+              reject(err);
+            });
         });
-      } else {
-        loggerService.info(`${name}(${toString(args)}) => ${toString(result)}`);
       }
-
+      loggerService.info(`${name}(${toString(args)}) => ${toString(result)}`);
       return result;
     };
     return descriptor;

@@ -10,19 +10,28 @@ function isPromise(p) {
   return false;
 }
 
-// ✅ Check if return value is promise
-function returnsPromise(f) {
-  if (
-    f.constructor.name === 'AsyncFunction' ||
-    (typeof f === 'function' && isPromise(f()))
-  ) {
-    return true;
+function toString(arg: unknown): string {
+  if (Array.isArray(arg)) {
+    return arg.reduce((acc, item, cur, array) => {
+      if (cur === array.length - 1) {
+        return `${acc}${toString(item)}`;
+      }
+      return `${acc}${toString(item)},`;
+    }, '');
+  }
+  if (typeof arg === 'object') {
+    return `{${Object.keys(arg).reduce((acc, key, cur, arr) => {
+      if (cur === arr.length - 1) {
+        return `${acc}${key}:${arg[key]}`;
+      }
+      return `${acc}${key}:${arg[key]},`;
+    }, '')}}`;
   }
 
-  return false;
+  return `${arg}`;
 }
 
-export function log(logger?: LoggerServiceInterface) {
+export function log(name: string, logger?: LoggerServiceInterface) {
   const loggerService = logger || new LoggerServiceWinton();
   return function (
     target: any,
@@ -32,14 +41,16 @@ export function log(logger?: LoggerServiceInterface) {
     const originalMethod = descriptor.value;
 
     descriptor.value = async function (...args: any[]) {
-      let result: any;
+      const result = originalMethod.apply(this, args);
 
-      if (returnsPromise(originalMethod)) {
-        result = await originalMethod.apply(this, args);
+      if (result.then) {
+        result.then((res) => {
+          loggerService.info(`${name}(${toString(args)}) => ${toString(res)}`);
+        });
       } else {
-        result = originalMethod.apply(this, args);
+        loggerService.info(`${name}(${toString(args)}) => ${toString(result)}`);
       }
-      loggerService.info(`${propertyKey}(${args}) => ${result}`);
+
       return result;
     };
     return descriptor;

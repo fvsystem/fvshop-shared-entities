@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 /* eslint-disable no-return-assign */
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 import { configTest as config } from '../../config';

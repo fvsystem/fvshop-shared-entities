@@ -28,8 +28,11 @@ export abstract class RepositorySequelize<
     this.toModel = toModel;
   }
 
-  async findAll(): Promise<E[]> {
-    const entities = await this.model.findAll();
+  async findAll(options?: { limit?: number; offset?: number }): Promise<E[]> {
+    const entities = await this.model.findAll({
+      limit: options?.limit,
+      offset: options?.offset,
+    });
     return Promise.all(
       entities.map((entity) => this.toEntity(entity.dataValues))
     );

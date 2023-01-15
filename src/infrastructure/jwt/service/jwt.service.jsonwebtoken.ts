@@ -1,10 +1,5 @@
 import { sign, Algorithm, verify } from 'jsonwebtoken';
-import {
-  JWTData,
-  JWTPayload,
-  JWTServicesInterface,
-  JWTVerifyOptions,
-} from '@root/application';
+import { JWTData, JWTPayload, JWTServicesInterface } from '@root/application';
 
 export interface JWTServiceJsonWebTokenProps {
   privateKey?: string;
@@ -22,17 +17,13 @@ export class JWTServiceJsonWebToken<Payload extends JWTPayload>
     this.props = props;
   }
 
-  async verify(
-    token: string,
-    options?: JWTVerifyOptions
-  ): Promise<Payload & JWTData> {
+  async verify(token: string): Promise<Payload & JWTData> {
     return new Promise((resolve, reject) => {
       verify(
         token,
         this.props.publicKey,
         {
           algorithms: [this.props.algorithm],
-          maxAge: options?.maxAge || '20s',
         },
         (err, payload) => {
           if (err) {
